@@ -1,6 +1,6 @@
 # FAST TAIL 快速安装 tailwindcss 到 react!!
 
-## version 0.1
+## version 0.2
 
 ## 注意事项 
 * `仅适配 vite 下创建的 react 工程`
@@ -9,5 +9,5 @@
 ## 使用 
 
 ```sh
-curl -O https://raw.githubusercontent.com/kazawan/fasttail/main/fasttail.sh && bash fasttail.sh
+curl -O https://raw.githubusercontent.com/kazawan/fasttail/main/fasttail.sh && bash fasttail.sh && rm fasttail.sh
 ```
