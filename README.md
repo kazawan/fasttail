@@ -11,3 +11,9 @@
 ```sh
 curl -O https://raw.githubusercontent.com/kazawan/fasttail/main/fasttail.sh && bash fasttail.sh && rm fasttail.sh
 ```
+
+搭配 `proxy` clash 使用
+```sh
+curl --proxy "http:127.0.0.1:7890" -O https://raw.githubusercontent.com/kazawan/fasttail/main/fasttail.sh && bash fasttail.sh && rm fasttail.sh
+```
+
