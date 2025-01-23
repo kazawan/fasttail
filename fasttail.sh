@@ -47,7 +47,7 @@ echo -ne "${GREEN}|安装完成！${NC}\r"
 echo -ne "                                               \r"
 echo -ne "${GREEN}|初始化tailwindcss....${NC}\r"
 
-npx tailwindcss init
+# npx tailwindcss init
 
 echo -ne "                                               \r"    
 echo -ne "${GREEN}|初始化完成！${NC}\r"
