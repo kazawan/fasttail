@@ -37,62 +37,52 @@ echo -e "\r\n"
 
 echo -ne "${GREEN}|快速安装tailwindcss....${NC}\r"
 
-npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+# 更新安装命令以使用新的vite插件
+npm install -D tailwindcss @tailwindcss/vite
 
-## 等待安装完成
 echo -ne "                                               \r"
 echo -ne "${GREEN}|安装完成！${NC}\r"   
 
-# 初始化tailwindcss
+# 初始化tailwindcss (不再需要-p参数，因为我们使用vite插件)
 echo -ne "                                               \r"
 echo -ne "${GREEN}|初始化tailwindcss....${NC}\r"
 
-npx tailwindcss init -p
+npx tailwindcss init
 
 echo -ne "                                               \r"    
 echo -ne "${GREEN}|初始化完成！${NC}\r"
 sleep 0.25 
 
+# 修改vite.config.js文件
+FILE_VITE_CONFIG="./vite.config.js"
 
-
-
-
-FILE_INDEX_CSS="./src/index.css"    # index.css文件路径
-
-# 判断文件是否存在
-if [ ! -f "$FILE_INDEX_CSS" ]; then
-    # echo -ne "${RED}文件不存在！${NC}"
-    echo -ne "                                               \r"
-    echo  -ne  "${RED}/  ./src/index.css 文件不存在！${NC}\r"
+if [ ! -f "$FILE_VITE_CONFIG" ]; then
+    touch $FILE_VITE_CONFIG
+    echo "import { defineConfig } from 'vite'" > $FILE_VITE_CONFIG
+    echo "import tailwindcss from '@tailwindcss/vite'" >> $FILE_VITE_CONFIG
+    echo "" >> $FILE_VITE_CONFIG
+    echo "export default defineConfig({" >> $FILE_VITE_CONFIG
+    echo "  plugins: [" >> $FILE_VITE_CONFIG
+    echo "    tailwindcss()," >> $FILE_VITE_CONFIG
+    echo "  ]," >> $FILE_VITE_CONFIG
+    echo "})" >> $FILE_VITE_CONFIG
+    echo -ne "${GREEN}创建并配置 vite.config.js 完成！${NC}\r"
     sleep 0.25
-    
-else
-    # echo -ne "${GREEN}文件存在！${NC}"
-    echo -ne "                                               \r"
+fi
 
+FILE_INDEX_CSS="./src/index.css"    
+
+if [ ! -f "$FILE_INDEX_CSS" ]; then
+    echo -ne "${RED}/  ./src/index.css 文件不存在！${NC}\r"
+    sleep 0.25
+else
     echo -ne "${GREEN}- 文件存在！${NC}\r"
     sleep 0.25
-    # 删除文件内容
+    # 使用新的导入语法
     echo "" > $FILE_INDEX_CSS
-    # 在文件头部添加内容
-    echo "@tailwind base;" >> $FILE_INDEX_CSS
-    echo "@tailwind components;" >> $FILE_INDEX_CSS
-    echo "@tailwind utilities;" >> $FILE_INDEX_CSS
-    # 基础样式root
-    ## :root {
-    #   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    #   line-height: 1.5;
-    #   font-weight: 400;
-
-    #   color-scheme: light dark;
-    #   color: rgba(255, 255, 255, 0.87);
-    #   background-color: #242424;
-
-    #   font-synthesis: none;
-    #   text-rendering: optimizeLegibility;
-    #   -webkit-font-smoothing: antialiased;
-    #   -moz-osx-font-smoothing: grayscale;
-    # }
+    echo '@import "tailwindcss";' >> $FILE_INDEX_CSS
+    
+    # 添加基础样式
     echo ":root {" >> $FILE_INDEX_CSS
     echo "  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;" >> $FILE_INDEX_CSS
     echo "  line-height: 1.5;" >> $FILE_INDEX_CSS
@@ -107,40 +97,19 @@ else
     echo "  -webkit-font-smoothing: antialiased;" >> $FILE_INDEX_CSS
     echo "  -moz-osx-font-smoothing: grayscale;" >> $FILE_INDEX_CSS
     echo "}" >> $FILE_INDEX_CSS
+    
     echo -ne "${GREEN}\ index.css文件修改完成！${NC}\r"
     sleep 0.25
-
-    
-
 fi
 
-
-# 修改tailwind.config.js文件
-FILE_TAILWIND_CONFIG_JS="./tailwind.config.js"    # tailwind.config.js文件路径
-# 判断文件是否存在
+# 修改tailwind.config.js
+FILE_TAILWIND_CONFIG_JS="./tailwind.config.js"    
 
 if [ ! -f "$FILE_TAILWIND_CONFIG_JS" ]; then
-    echo -ne "                                               \r"
-
     echo -ne "${RED} tailwind.config.js 文件不存在！${NC}\r"
     sleep 0.25
-    
 else
-    echo -ne "                                               \r"
-
-    echo -ne "${GREEN} tailwind.config.js文件存在！${NC}\r"
-    sleep 0.25
-    # 删除文件内容
     echo "" > $FILE_TAILWIND_CONFIG_JS
-    # 在文件头部添加内容
-    # /** @type {import('tailwindcss').Config} */
-    # export default {
-    # content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
-    # theme: {
-    #     extend: {},
-    # },
-    # plugins: [],
-    # };
     echo "/** @type {import('tailwindcss').Config} */" >> $FILE_TAILWIND_CONFIG_JS
     echo "export default {" >> $FILE_TAILWIND_CONFIG_JS
     echo "  content: [" >> $FILE_TAILWIND_CONFIG_JS
@@ -152,12 +121,10 @@ else
     echo "  }," >> $FILE_TAILWIND_CONFIG_JS
     echo "  plugins: []," >> $FILE_TAILWIND_CONFIG_JS
     echo "};" >> $FILE_TAILWIND_CONFIG_JS
-    echo -ne "                                               \r"
-
+    
     echo -ne "${GREEN} tailwind.config.js文件修改完成！${NC}\r"
     sleep 0.25
 fi
-
 
 # 删除./src/App.css文件 
 FILE_APP_CSS="./src/App.css"    # App.css文件路径
