@@ -38,7 +38,7 @@ echo -e "\r\n"
 echo -ne "${GREEN}|快速安装tailwindcss....${NC}\r"
 
 # 更新安装命令以使用新的vite插件
-npm install -D tailwindcss @tailwindcss/vite
+npm install  tailwindcss @tailwindcss/vite
 
 echo -ne "                                               \r"
 echo -ne "${GREEN}|安装完成！${NC}\r"   
