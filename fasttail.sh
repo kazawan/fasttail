@@ -57,16 +57,37 @@ sleep 0.25
 FILE_VITE_CONFIG="./vite.config.js"
 
 if [ ! -f "$FILE_VITE_CONFIG" ]; then
-    touch $FILE_VITE_CONFIG
-    echo "import { defineConfig } from 'vite'" > $FILE_VITE_CONFIG
-    echo "import tailwindcss from '@tailwindcss/vite'" >> $FILE_VITE_CONFIG
-    echo "" >> $FILE_VITE_CONFIG
-    echo "export default defineConfig({" >> $FILE_VITE_CONFIG
-    echo "  plugins: [" >> $FILE_VITE_CONFIG
-    echo "    tailwindcss()," >> $FILE_VITE_CONFIG
-    echo "  ]," >> $FILE_VITE_CONFIG
-    echo "})" >> $FILE_VITE_CONFIG
+    # 创建新的vite.config.js
+    cat > $FILE_VITE_CONFIG << EOL
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
+  ],
+})
+EOL
     echo -ne "${GREEN}创建并配置 vite.config.js 完成！${NC}\r"
+    sleep 0.25
+else
+    # 如果文件已存在，备份后重新创建
+    cp $FILE_VITE_CONFIG "${FILE_VITE_CONFIG}.backup"
+    cat > $FILE_VITE_CONFIG << EOL
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
+  ],
+})
+EOL
+    echo -ne "${GREEN}更新 vite.config.js 配置完成！${NC}\r"
     sleep 0.25
 fi
 
